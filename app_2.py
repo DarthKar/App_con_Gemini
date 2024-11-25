@@ -3,8 +3,8 @@ import pandas as pd
 import re
 
 def validar_nombre(nombre):
-    """Valida si el nombre solo contiene caracteres alfabéticos y comienza con mayúscula."""
-    patron = r"^[A-Z][a-zA-Z]*$"
+    """Valida si el nombre solo contiene caracteres alfabéticos, espacios y comienza con mayúscula."""
+    patron = r"^[A-Z][a-zA-Z ]*$"
     return bool(re.match(patron, nombre))
 
 def validar_email(email):
@@ -13,8 +13,8 @@ def validar_email(email):
     return bool(re.match(patron, email))
 
 def validar_telefono(telefono):
-    """Valida un número de teléfono de 10 dígitos (ajusta según tu formato)."""
-    patron = r"^\d{10}$"
+    """Valida un número de teléfono en el formato 319 2254437."""
+    patron = r"^\d{3}\s\d{7}$"
     return bool(re.match(patron, telefono))
 
 def validar_fecha(fecha):
@@ -28,17 +28,17 @@ def main():
     with st.form("my_form"):
         nombre = st.text_input("Nombre:")
         email = st.text_input("Correo electrónico:")
-        telefono = st.text_input("Teléfono:")
+        telefono = st.text_input("Teléfono (319 2254437):")
         fecha = st.text_input("Fecha (AAAA-MM-DD):")
         submitted = st.form_submit_button("Validar")
 
         if submitted:
             if not validar_nombre(nombre):
-                st.error("Nombre inválido. Solo se permiten letras y debe iniciar con mayúscula.")
+                st.error("Nombre inválido. Solo se permiten letras, espacios y debe iniciar con mayúscula.")
             if not validar_email(email):
                 st.error("Correo electrónico inválido.")
             if not validar_telefono(telefono):
-                st.error("Número de teléfono inválido.")
+                st.error("Número de teléfono inválido. Utiliza el formato 319 2254437.")
             if not validar_fecha(fecha):
                 st.error("Fecha inválida. Utiliza el formato AAAA-MM-DD.")
 
