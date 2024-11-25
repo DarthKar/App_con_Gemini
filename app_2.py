@@ -24,7 +24,7 @@ def validar_fecha(fecha):
 
 def main():
     st.title("Formulario de Validación")
-
+    st.write("Programado por Miguel Angel Peña")
     with st.form("my_form"):
         nombre = st.text_input("Nombre:")
         email = st.text_input("Correo electrónico:")
