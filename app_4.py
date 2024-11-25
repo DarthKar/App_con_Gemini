@@ -4,6 +4,7 @@ import csv
 import json
 
 st.title("Buscador Inteligente de Patrones de Texto")
+st.write("Por: Miguel Angel Peña Marin")
 
 # Opciones para cargar texto
 st.sidebar.header("Selecciona una opción:")
