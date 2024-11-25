@@ -23,7 +23,7 @@ def evaluar_contrasena(contrasena):
 # Interfaz de usuario de Streamlit
 st.title("Evaluador de Contraseñas")
 contrasena = st.text_input("Ingrese su contraseña")
-st.write("programado por miguel angel peña marin)
+st.write("programado por miguel angel peña marin")
 
 if contrasena:
     faltantes = evaluar_contrasena(contrasena)
