@@ -54,6 +54,7 @@ def procesar_csv(data):
 
 # Configuración de Streamlit
 st.title("Procesador de Productos con Regex")
+st.write("Por: Miguel Angel Peña Marin")
 
 # Subir archivo CSV
 archivo_subido = st.file_uploader("Sube tu archivo CSV", type=["csv"])
