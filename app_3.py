@@ -1,3 +1,4 @@
+import csv
 import streamlit as st
 import pandas as pd
 import re
@@ -7,7 +8,7 @@ def extraer_datos(uploaded_file):
     """Extrae datos de un archivo CSV y los organiza en un DataFrame.
 
     Args:
-        uploaded_file: The uploaded file object.
+        uploaded_file: El archivo CSV subido.
 
     Returns:
         pd.DataFrame: DataFrame con los datos extraídos.
@@ -16,23 +17,34 @@ def extraer_datos(uploaded_file):
     file_contents = io.BytesIO(uploaded_file.read()).getvalue().decode('utf-8')
 
     datos = []
-    for linea in file_contents.splitlines():
-        numero_serie, nombre_producto, valor, fecha, contacto = linea.strip().split(',')
+    with open(archivo_csv, 'r') as f:
+        sniffer = csv.Sniffer()
+        dialect = sniffer.sniff(f.readline())
+        delimiter = dialect.delimiter
 
-        # Validación y extracción de datos
-        valor = float(valor)
-        match_fecha = re.match(r"(\d{2})/(\d{2})/(\d{2})", fecha)
-        dia, mes, anio = match_fecha.groups()
+        reader = csv.reader(f, delimiter=delimiter)
+        for row in reader:
+            # Asegurarse de que haya al menos 5 campos
+            if len(row) >= 5:
+                numero_serie, nombre_producto, valor, fecha, contacto = row[:5]
 
-        # Separar el contacto en número de teléfono o correo electrónico
-        if "+" in contacto:
-            telefono = contacto
-            email = None
-        else:
-            telefono = None
-            email = contacto
+                # Validación y extracción de datos
+                try:
+                    valor = float(valor)
+                    match_fecha = re.match(r"(\d{2})/(\d{2})/(\d{2})", fecha)
+                    dia, mes, anio = match_fecha.groups()
 
-        datos.append([numero_serie, nombre_producto, valor, dia, mes, anio, telefono, email])
+                    # Separar el contacto en número de teléfono o correo electrónico
+                    if "+" in contacto:
+                        telefono = contacto
+                        email = None
+                    else:
+                        telefono = None
+                        email = contacto
+
+                    datos.append([numero_serie, nombre_producto, valor, dia, mes, anio, telefono, email])
+                except ValueError:
+                    print(f"Error al procesar la línea: {row}")
 
     df = pd.DataFrame(datos, columns=["Número de serie", "Nombre del producto", "Valor", "Día", "Mes", "Año", "Teléfono", "Email"])
     return df
