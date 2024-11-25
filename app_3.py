@@ -17,12 +17,7 @@ def extraer_datos(uploaded_file):
     file_contents = io.BytesIO(uploaded_file.read()).getvalue().decode('utf-8')
 
     datos = []
-    with open(archivo_csv, 'r') as f:
-        sniffer = csv.Sniffer()
-        dialect = sniffer.sniff(f.readline())
-        delimiter = dialect.delimiter
-
-        reader = csv.reader(f, delimiter=delimiter)
+    with csv.reader(file_contents.splitlines(), delimiter=csv.Sniffer().sniff(file_contents).delimiter) as reader:
         for row in reader:
             # Asegurarse de que haya al menos 5 campos
             if len(row) >= 5:
