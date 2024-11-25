@@ -28,7 +28,7 @@ def main():
     with st.form("my_form"):
         nombre = st.text_input("Nombre:")
         email = st.text_input("Correo electrónico:")
-        telefono = st.text_input("Teléfono (319 2254437):")
+        telefono = st.text_input("Teléfono (XX XXXXXXX):")
         fecha = st.text_input("Fecha (AAAA-MM-DD):")
         submitted = st.form_submit_button("Validar")
 
