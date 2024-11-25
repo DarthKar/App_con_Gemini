@@ -11,11 +11,11 @@ def evaluar_contrasena(contrasena):
 
     # Condiciones faltantes
     faltantes = {
-        'longitud': len(contrasena) < 8,
-        'mayuscula': not mayuscula.search(contrasena),
-        'minuscula': not minuscula.search(contrasena),
-        'numero': not numero.search(contrasena),
-        'especial': not especial.search(contrasena)
+        'longitud mayor o igual a 8': len(contrasena) < 8,
+        'al menos una mayuscula': not mayuscula.search(contrasena),
+        'al menos una minuscula': not minuscula.search(contrasena),
+        'al menos un numero': not numero.search(contrasena),
+        'al menos un caracter especial': not especial.search(contrasena)
     }
 
     return faltantes
@@ -33,4 +33,4 @@ if contrasena:
         st.error("La contraseña no cumple con los siguientes criterios:")
         for criterio, falta in faltantes.items():
             if falta:
-                st.write(f"- Debe incluir al menos {criterio}.")
+                st.write(f"- {criterio}.")
