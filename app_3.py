@@ -1,36 +1,38 @@
 import streamlit as st
 import pandas as pd
 import re
+import io
 
-def extraer_datos(archivo_csv):
+def extraer_datos(uploaded_file):
     """Extrae datos de un archivo CSV y los organiza en un DataFrame.
 
     Args:
-        archivo_csv (str): Ruta al archivo CSV.
+        uploaded_file: The uploaded file object.
 
     Returns:
         pd.DataFrame: DataFrame con los datos extraídos.
     """
 
+    file_contents = io.BytesIO(uploaded_file.read()).getvalue().decode('utf-8')
+
     datos = []
-    with open(archivo_csv, 'r') as f:
-        for linea in f:
-            numero_serie, nombre_producto, valor, fecha, contacto = linea.strip().split(',')
+    for linea in file_contents.splitlines():
+        numero_serie, nombre_producto, valor, fecha, contacto = linea.strip().split(',')
 
-            # Validación y extracción de datos
-            valor = float(valor)
-            match_fecha = re.match(r"(\d{2})/(\d{2})/(\d{2})", fecha)
-            dia, mes, anio = match_fecha.groups()
+        # Validación y extracción de datos
+        valor = float(valor)
+        match_fecha = re.match(r"(\d{2})/(\d{2})/(\d{2})", fecha)
+        dia, mes, anio = match_fecha.groups()
 
-            # Separar el contacto en número de teléfono o correo electrónico
-            if "+" in contacto:
-                telefono = contacto
-                email = None
-            else:
-                telefono = None
-                email = contacto
+        # Separar el contacto en número de teléfono o correo electrónico
+        if "+" in contacto:
+            telefono = contacto
+            email = None
+        else:
+            telefono = None
+            email = contacto
 
-            datos.append([numero_serie, nombre_producto, valor, dia, mes, anio, telefono, email])
+        datos.append([numero_serie, nombre_producto, valor, dia, mes, anio, telefono, email])
 
     df = pd.DataFrame(datos, columns=["Número de serie", "Nombre del producto", "Valor", "Día", "Mes", "Año", "Teléfono", "Email"])
     return df
